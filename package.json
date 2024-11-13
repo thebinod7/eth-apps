@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx hardhat test",
     "compile": "npx hardhat compile",
-    "deploy": "npx hardhat ignition deploy ./ignition/modules/Token.js --network"
+    "test": "npx hardhat test",
+    "deploy": "npx hardhat ignition deploy ./ignition/modules/Token.js --network sepolia"
   },
   "keywords": [],
   "author": "",
