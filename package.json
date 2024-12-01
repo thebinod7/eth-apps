@@ -7,6 +7,7 @@
     "compile": "npx hardhat compile",
     "test": "npx hardhat test",
     "deploy-and-copy": "npx hardhat run scripts/deploy.js --network hardhat",
+    "deploy-multisig": "npx hardhat run scripts/multisig.js --network hardhat",
     "deploy": "npx hardhat ignition deploy ./ignition/modules/Token.js --network sepolia"
   },
   "keywords": [],
