@@ -1,1 +1,1 @@
-# Boilerplate for hardhat Dapps
+# Ethereum smart contracts

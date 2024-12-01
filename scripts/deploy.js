@@ -24,13 +24,7 @@ async function main() {
 
 function saveFrontendFiles(token) {
   const fs = require("fs");
-  const contractsDir = path.join(
-    __dirname,
-    "..",
-    "frontend",
-    "app",
-    "contracts"
-  );
+  const contractsDir = path.join(__dirname, "..", "contract-builds", "apps");
 
   if (!fs.existsSync(contractsDir)) {
     fs.mkdirSync(contractsDir);
@@ -41,10 +35,10 @@ function saveFrontendFiles(token) {
     JSON.stringify({ Token: token.runner.address }, undefined, 2)
   );
 
-  const TokenArtifact = artifacts.readArtifactSync("Token");
+  const TokenArtifact = artifacts.readArtifactSync(CONTRACT_NAME);
 
   fs.writeFileSync(
-    path.join(contractsDir, "Token.json"),
+    path.join(contractsDir, `${CONTRACT_NAME}.json`),
     JSON.stringify(TokenArtifact, null, 2)
   );
 }
