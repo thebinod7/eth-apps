@@ -1,7 +1,7 @@
 const { network, artifacts } = require("hardhat");
 const path = require("path");
 
-const CONTRACT_NAME = "SimpleStorage";
+const CONTRACT_NAME = "Wallet";
 
 async function main() {
   if (network.name === "hardhat") {
