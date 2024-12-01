@@ -8,6 +8,7 @@ const SEPOLIA_PRIVATE_KEY = process.env.SEPOLIA_PRIVATE_KEY;
 module.exports = {
   solidity: "0.8.27",
   networks: {
+    hardhat: {},
     sepolia: {
       url: RPC_NODE_URL,
       accounts: [SEPOLIA_PRIVATE_KEY],
