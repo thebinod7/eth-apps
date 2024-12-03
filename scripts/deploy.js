@@ -1,7 +1,8 @@
-const { network, artifacts } = require("hardhat");
+const hre = require("hardhat");
 const path = require("path");
 
-const CONTRACT_NAME = "Wallet";
+const { network, artifacts } = hre;
+const CONTRACT_NAME = "SimpleStorage";
 
 async function main() {
   if (network.name === "hardhat") {
@@ -14,18 +15,19 @@ async function main() {
 
   // ethers is available in the global scope
   const [deployer] = await ethers.getSigners();
-  console.log("Deployer address=>", deployer.address);
+  console.log("Deployer wallet address:", deployer.address);
 
-  const contract = await ethers.getContractFactory(CONTRACT_NAME);
-  const contractData = await contract.deploy();
+  const contractData = await ethers.deployContract(CONTRACT_NAME, []);
+  await contractData.waitForDeployment();
+  const contractAddr = contractData.target;
 
-  saveContractABIs(contractData);
+  saveContractABIs(contractData, contractAddr);
 }
 
-function saveContractABIs(contractData) {
+function saveContractABIs(contractData, contractAddr) {
   const fs = require("fs");
   const DIR = `build-${CONTRACT_NAME}`;
-  console.log("Saving contract artifacts to ", DIR);
+  console.log("Saving contract artifacts to...", DIR);
   const contractsDir = path.join(__dirname, "..", DIR);
 
   // 1. Create a directory to store the contract artifacts
@@ -34,11 +36,7 @@ function saveContractABIs(contractData) {
   // 2. Save the contract address to a JSON file
   fs.writeFileSync(
     path.join(contractsDir, "contract-address.json"),
-    JSON.stringify(
-      { ContractAddress: contractData.runner.address },
-      undefined,
-      2
-    )
+    JSON.stringify({ ContractAddress: contractAddr }, undefined, 2)
   );
 
   const contractArtifacts = artifacts.readArtifactSync(CONTRACT_NAME);
