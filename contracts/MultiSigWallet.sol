@@ -2,19 +2,6 @@
 pragma solidity ^0.8.26;
 
 contract MultiSigWallet {
-    event Deposit(address indexed sender, uint256 amount, uint256 balance);
-
-    event SubmitTransaction(
-        address indexed owner,
-        uint256 indexed txIndex,
-        address indexed to,
-        uint256 value,
-        bytes data
-    );
-    event ConfirmTransaction(address indexed owner, uint256 indexed txIndex);
-    event RevokeConfirmation(address indexed owner, uint256 indexed txIndex);
-    event ExecuteTransaction(address indexed owner, uint256 indexed txIndex);
-
     address[] public owners;
     mapping(address => bool) public isOwner;
     uint256 public numConfirmationsRequired;
@@ -31,6 +18,19 @@ contract MultiSigWallet {
     mapping(uint256 => mapping(address => bool)) public isConfirmed;
 
     Transaction[] public transactions;
+
+    event SubmitTransaction(
+        address indexed owner,
+        uint256 indexed txIndex,
+        address indexed to,
+        uint256 value,
+        bytes data
+    );
+
+    event Deposit(address indexed sender, uint256 amount, uint256 balance);
+    event ConfirmTransaction(address indexed owner, uint256 indexed txIndex);
+    event RevokeConfirmation(address indexed owner, uint256 indexed txIndex);
+    event ExecuteTransaction(address indexed owner, uint256 indexed txIndex);
 
     modifier onlyOwner() {
         require(isOwner[msg.sender], "not owner");
@@ -57,9 +57,11 @@ contract MultiSigWallet {
         require(
             _numConfirmationsRequired > 0 &&
                 _numConfirmationsRequired <= _owners.length,
-            "invalid number of required confirmations"
+            "Invalid number of required confirmations"
         );
 
+        // Eg: [0x1, 0x2, 0x3]
+        // Here address(0) refers to invalid addr: 0x0000000000000000000000000000000000000000
         for (uint256 i = 0; i < _owners.length; i++) {
             address owner = _owners[i];
 
@@ -148,6 +150,7 @@ contract MultiSigWallet {
         emit RevokeConfirmation(msg.sender, _txIndex);
     }
 
+    // memory means data is stored in temp memory and not in storage i.e. blcokchain store
     function getOwners() public view returns (address[] memory) {
         return owners;
     }

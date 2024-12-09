@@ -19,12 +19,11 @@ async function main() {
 
   const contractData = await ethers.deployContract(CONTRACT_NAME, []);
   await contractData.waitForDeployment();
-  const contractAddr = contractData.target;
 
-  saveContractABIs(contractData, contractAddr);
+  saveContractABIs(contractData);
 }
 
-function saveContractABIs(contractData, contractAddr) {
+function saveContractABIs(contractData) {
   const fs = require("fs");
   const DIR = `build-${CONTRACT_NAME}`;
   console.log("Saving contract artifacts to...", DIR);
@@ -36,7 +35,7 @@ function saveContractABIs(contractData, contractAddr) {
   // 2. Save the contract address to a JSON file
   fs.writeFileSync(
     path.join(contractsDir, "contract-address.json"),
-    JSON.stringify({ ContractAddress: contractAddr }, undefined, 2)
+    JSON.stringify({ ContractAddress: contractData.target }, undefined, 2)
   );
 
   const contractArtifacts = artifacts.readArtifactSync(CONTRACT_NAME);
